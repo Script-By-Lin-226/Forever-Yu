@@ -10,6 +10,25 @@ interface Response {
   extraNote: string;
 }
 
+const Heartbeat = () => (
+  <div className="heartbeat-container scale-75">
+    <div className="heartbeat-inner">
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-main">❤️</div>
+    </div>
+    <div className="ecg-container h-[40px] mt-4">
+      <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-full opacity-60">
+        <path 
+          className="ecg-line" 
+          d="M0,50 L200,50 L220,50 L240,10 L260,90 L280,50 L300,50 L500,50 L520,50 L540,10 L560,90 L580,50 L600,50 L800,50 L820,50 L840,10 L860,90 L880,50 L1000,50" 
+        />
+      </svg>
+    </div>
+  </div>
+);
+
 export default function AdminPanel() {
   const [responses, setResponses] = useState<Response[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,93 +73,110 @@ export default function AdminPanel() {
   };
 
   return (
-    <main className="min-h-screen pb-20" style={{ background: '#f8f9fa' }}>
-      <div className="content-wrapper" style={{ maxWidth: '900px' }}>
-        <h1 className="fancy-title" style={{ fontSize: '2.5rem' }}>Admin Panel</h1>
-        <p className="description-text mx-auto">All responses collected from the surprise experience.</p>
-
-        {loading ? (
-          <div className="text-center py-10" style={{ color: '#999' }}>
-            <p style={{ fontSize: '1.2rem' }}>Loading responses...</p>
-          </div>
-        ) : responses.length === 0 ? (
-          <div className="text-center py-10" style={{ color: '#999' }}>
-            <p style={{ fontSize: '1.2rem' }}>No responses yet.</p>
-            <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Responses will appear here once someone completes the experience.</p>
-          </div>
-        ) : (
-          <>
-            <div className="w-full flex justify-between items-center mb-8 px-4">
-              <span className="text-sm font-medium text-gray-500">Total: {responses.length}</span>
-              <button onClick={clearAll} className="btn-back" style={{ borderColor: '#e74c3c', color: '#e74c3c', padding: '8px 16px', fontSize: '0.9rem' }}>
-                Clear All Data
+    <div className="admin-letter-theme pb-32 min-h-screen">
+      <main className="max-w-4xl mx-auto px-6 pt-20">
+        
+        <div className="text-center mb-16 fade-in px-4">
+          <h1 className="fancy-title" style={{ fontSize: 'var(--fluid-h1)', color: 'var(--letter-accent)', letterSpacing: '-0.02em' }}>The Collector's Archive</h1>
+          <p className="description-text mx-auto italic opacity-60 mt-4 max-w-xl">
+            Letters chronologically arranged from your shared eternity. Every choice and every note preserved here.
+          </p>
+          
+          {responses.length > 0 && (
+            <div className="mt-10 flex justify-center gap-4">
+              <button onClick={clearAll} className="admin-letter-btn btn-letter-outline">
+                Clear All
               </button>
             </div>
+          )}
+        </div>
 
-            <div className="space-y-6">
+        <div className="center-content-y px-2 md:px-0">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20 fade-in">
+              <Heartbeat />
+              <p className="text-rose-400 font-bold tracking-widest uppercase text-[10px] mt-6">Unfolding letters...</p>
+            </div>
+          ) : responses.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 fade-in">
+              <Heartbeat />
+              <p className="text-gray-400 mt-10 italic text-lg text-center leading-relaxed">
+                Every heartbeat is a silent message...<br/>
+                <span className="text-sm opacity-60">Wait for someone to walk through the journey you created.</span>
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-12 md:gap-20 fade-in mt-16 max-w-5xl mx-auto">
               {responses.map((res, idx) => (
-                <div key={res.id} className="admin-card relative group">
-                  <button 
-                    onClick={() => deleteResponse(res.id)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors cursor-pointer"
-                    title="Delete response"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 6h18"></path>
-                      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                      <line x1="10" y1="11" x2="10" y2="17"></line>
-                      <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
-                  </button>
+              <div key={res.id} className="response-letter-card fade-in" style={{ animationDelay: `${idx * 0.1}s` }}>
+                <div className="wax-seal-badge">
+                  <span className="opacity-80">❤️</span>
+                </div>
+                
+                <div className="flex justify-between items-baseline mb-8">
+                  <h3 className="admin-letter-title w-full">Letter #{res.id}</h3>
+                  <span className="letter-timestamp text-right min-w-[150px]">
+                    {new Date(res.timestamp).toLocaleDateString()}
+                  </span>
+                </div>
 
-                  <div className="admin-card-header">
-                    <span className="admin-badge">Response #{res.id}</span>
-                    <span className="admin-date">{new Date(res.timestamp).toLocaleString()}</span>
-                  </div>
-
-                  <div className="admin-section">
-                    <h3 className="admin-section-title">Quiz Answers</h3>
-                    {res.quizAnswers.map((qa, i) => (
-                      <div key={i} className="admin-row">
-                        <p className="admin-question">{qa.question}</p>
-                        <div className="admin-answer-row">
-                          <span className={`admin-answer ${qa.answer === qa.correct ? 'admin-correct' : 'admin-wrong'}`}>
-                            {qa.answer || '—'}
-                          </span>
-                          {qa.answer !== qa.correct && (
-                            <span className="admin-correct-label">Correct: {qa.correct}</span>
-                          )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                  <div className="space-y-6">
+                    <h4 className="text-[10px] font-bold text-rose-300 uppercase tracking-[0.2em] mb-4">Section I: Understanding</h4>
+                    <div className="space-y-4">
+                      {res.quizAnswers.map((qa, i) => (
+                        <div key={i} className="admin-letter-section">
+                          <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">{qa.question}</p>
+                          <p className={`text-sm font-semibold truncate ${qa.answer === qa.correct ? 'text-green-600' : 'text-rose-500'}`}>
+                            {qa.answer || 'No selection'}
+                          </p>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="admin-section">
-                    <h3 className="admin-section-title">Acknowledged Items</h3>
-                    {res.acknowledgedDislikes.length > 0 ? (
-                      <ul className="admin-list">
-                        {res.acknowledgedDislikes.map((d, i) => (
-                          <li key={i} className="admin-list-item">✓ {d}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="admin-empty">None acknowledged</p>
+                  <div className="space-y-10">
+                    <div className="space-y-4">
+                      <h4 className="text-[10px] font-bold text-rose-300 uppercase tracking-[0.2em] mb-4">Section II: Respect</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {res.acknowledgedDislikes.length > 0 ? (
+                          res.acknowledgedDislikes.map((d, i) => (
+                            <span key={i} className="text-[11px] font-medium border border-rose-100 px-3 py-1.5 rounded-sm bg-rose-50/20 text-rose-500">
+                              ✓ {d}
+                            </span>
+                          ))
+                        ) : (
+                          <p className="text-sm italic text-gray-300">No boundaries marked.</p>
+                        )}
+                      </div>
+                    </div>
+
+                    {res.extraNote && (
+                      <div className="space-y-4 pt-6 border-t border-dashed border-gray-100">
+                        <h4 className="text-[10px] font-bold text-rose-300 uppercase tracking-[0.2em] mb-4">Section III: Message</h4>
+                        <p className="text-sm italic text-gray-600 leading-relaxed font-serif bg-yellow-50/10 p-4 rounded-lg border-l-2 border-rose-200">
+                          "{res.extraNote}"
+                        </p>
+                      </div>
                     )}
                   </div>
-
-                  {res.extraNote && (
-                    <div className="admin-section">
-                      <h3 className="admin-section-title">Extra Note</h3>
-                      <div className="admin-note">{res.extraNote}</div>
-                    </div>
-                  )}
                 </div>
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    </main>
+
+                <div className="mt-12 flex justify-end">
+                  <button 
+                    onClick={() => deleteResponse(res.id)}
+                    className="admin-letter-btn btn-letter-primary"
+                  >
+                    Discard
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          )}
+        </div>
+      </main>
+    </div>
   );
 }
+

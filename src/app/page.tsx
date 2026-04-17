@@ -273,40 +273,108 @@ export default function Home() {
 
         {/* Stage 4: Finale */}
         {stage === 4 && (
-          <div className="fade-in w-full max-w-3xl text-center relative">
-            {hearts.map((heart) => (
-              <span 
-                key={heart.id} 
-                className="falling-heart" 
-                style={{ left: heart.left, animationDuration: heart.duration, animationDelay: heart.delay }}
-              >
-                ❤️
-              </span>
-            ))}
-            <h2 className="fancy-title">Statement of Appreciation</h2>
-            <div className="finale-note text-center">
-              <p>To my most esteemed person Yu ❤️</p>
-              <br/>
-              <p>
-                This space was created as a testament to the value you bring into my life. 
-                Your perspective, your presence, and the way you navigate the world are inspirations 
-                that I hold in the highest regard.
-              </p>
-              <br/>
-              <p>
-                I am committed to our continued growth, to respecting your boundaries, 
-                and to celebrating the exceptional individual that you are. I swear I have only You and I will always behind you no matter what.
-              </p>
-              
-              <div className="finale-signature mt-12 text-left">
-                <p className="finale-title-text">Respectfully yours,</p>
-                <p className="finale-name-text">Liam</p>
+          <div className="center-content fade-in px-4">
+            <EnvelopeAnimation>
+              <h2 className="fancy-title" style={{ fontSize: 'var(--fluid-h2)', marginBottom: '1.5rem' }}>Statement of Appreciation</h2>
+              <div className="finale-note">
+                <p className="font-medium text-rose-500 mb-4">To my most esteemed person Yu ❤️</p>
+                <p className="text-sm leading-relaxed text-gray-600 mb-6">
+                  This space was created as a testament to the value you bring into my life. 
+                  Your perspective, your presence, and the way you navigate the world are inspirations 
+                  that I hold in the highest regard.
+                </p>
+                <p className="text-sm leading-relaxed text-gray-600 mb-8">
+                  I am committed to our continued growth, to respecting your boundaries, 
+                  and to celebrating the exceptional individual that you are. <br/>
+                  <strong>I swear I have only You</strong> and I will always be with you no matter what.
+                </p>
+                
+                <div className="finale-signature mt-12 pt-8 border-t border-rose-100">
+                  <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2">Respectfully yours,</p>
+                  <p className="font-serif italic text-2xl text-rose-600">Liam</p>
+                </div>
               </div>
-            </div>
+            </EnvelopeAnimation>
           </div>
         )}
       </div>
 
     </main>
   );
-}
+};
+
+const EnvelopeAnimation = ({ children }: { children: React.ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showHearts, setShowHearts] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      setShowHearts(true);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className={`envelope-wrapper ${isOpen ? 'open' : ''} fade-in-up`}>
+      {showHearts && <HeartBurst />}
+      <div className="envelope">
+        <div className="envelope-flap"></div>
+        <div className="envelope-front"></div>
+      </div>
+      <div className="letter-inner font-serif">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const HeartBurst = () => {
+  const hearts = Array.from({ length: 20 });
+  return (
+    <div className="heart-burst-container">
+      {hearts.map((_, i) => {
+        const angle = (i / 20) * 360;
+        const rad = (angle * Math.PI) / 180;
+        const distance = 100 + Math.random() * 200;
+        const tx = Math.cos(rad) * distance;
+        const ty = Math.sin(rad) * distance;
+        const scale = 0.5 + Math.random() * 1;
+        const rot = Math.random() * 360;
+        
+        return (
+          <div 
+            key={i} 
+            className="heart-particle"
+            style={{ 
+              '--tx': `${tx}px`, 
+              '--ty': `${ty}px`, 
+              '--scale': scale, 
+              '--rot': `${rot}deg` 
+            } as any}
+          >
+            ❤️
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+const Heartbeat = () => (
+  <div className="heartbeat-container scale-75">
+    <div className="heartbeat-inner">
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-ripple"></div>
+      <div className="heartbeat-main">❤️</div>
+    </div>
+    <div className="ecg-container h-[40px] mt-4">
+      <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-full opacity-60">
+        <path 
+          className="ecg-line" 
+          d="M0,50 L200,50 L220,50 L240,10 L260,90 L280,50 L300,50 L500,50 L520,50 L540,10 L560,90 L580,50 L600,50 L800,50 L820,50 L840,10 L860,90 L880,50 L1000,50" 
+        />
+      </svg>
+    </div>
+  </div>
+);
