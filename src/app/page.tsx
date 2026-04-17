@@ -48,8 +48,8 @@ export default function Home() {
     },
     {
       question: "Where was our most memorable moment?",
-      options: ["First Cafe Date", "That long walk", "The first time we met", "Every second with you"],
-      answer: "Every second with you"
+      options: ["Student Management System Training", "That long walk", "The first time we met", "Every second with you"],
+      answer: "Student Management System Training"
     },
     {
       question: "If I could give you anything, what would it be?",
