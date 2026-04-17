@@ -285,7 +285,7 @@ export default function Home() {
             ))}
             <h2 className="fancy-title">Statement of Appreciation</h2>
             <div className="finale-note text-center">
-              <p>To my most esteemed person,</p>
+              <p>To my most esteemed person Yu ❤️</p>
               <br/>
               <p>
                 This space was created as a testament to the value you bring into my life. 
@@ -295,7 +295,7 @@ export default function Home() {
               <br/>
               <p>
                 I am committed to our continued growth, to respecting your boundaries, 
-                and to celebrating the exceptional individual that you are.
+                and to celebrating the exceptional individual that you are. I swear I have only You and I will always behind you no matter what.
               </p>
               
               <div className="finale-signature mt-12 text-left">
