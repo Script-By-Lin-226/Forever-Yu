@@ -40,11 +40,15 @@ export default function AdminPanel() {
   const fetchResponses = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/choices');
+      const response = await fetch(`/api/choices?t=${Date.now()}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setResponses(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Failed to fetch responses:', error);
+      setResponses([]); // Fallback to empty
     } finally {
       setLoading(false);
     }

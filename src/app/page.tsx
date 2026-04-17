@@ -115,24 +115,6 @@ export default function Home() {
     }
   };
 
-  const Heartbeat = () => (
-    <div className="heartbeat-container">
-      <div className="heartbeat-inner">
-        <div className="heartbeat-ripple"></div>
-        <div className="heartbeat-ripple"></div>
-        <div className="heartbeat-ripple"></div>
-        <div className="heartbeat-main">❤️</div>
-      </div>
-      <div className="ecg-container">
-        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-full">
-          <path 
-            className="ecg-line" 
-            d="M0,50 L200,50 L220,50 L240,10 L260,90 L280,50 L300,50 L500,50 L520,50 L540,10 L560,90 L580,50 L600,50 L800,50 L820,50 L840,10 L860,90 L880,50 L1000,50" 
-          />
-        </svg>
-      </div>
-    </div>
-  );
 
   const nextStageWithSave = () => {
     if (stage === 3) {
@@ -360,8 +342,8 @@ const HeartBurst = () => {
     </div>
   );
 };
-const Heartbeat = () => (
-  <div className="heartbeat-container scale-75">
+const Heartbeat = ({ className = "" }: { className?: string }) => (
+  <div className={`heartbeat-container ${className}`}>
     <div className="heartbeat-inner">
       <div className="heartbeat-ripple"></div>
       <div className="heartbeat-ripple"></div>
