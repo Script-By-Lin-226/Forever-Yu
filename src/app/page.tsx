@@ -11,6 +11,7 @@ export default function Home() {
   const [checkedDislikes, setCheckedDislikes] = useState<boolean[]>([false, false, false, false]);
   const [extraNote, setExtraNote] = useState('');
   const [quizAnswers, setQuizAnswers] = useState<string[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (stage === 4) {
@@ -38,6 +39,15 @@ export default function Home() {
     '/images/image.png',
     '/images/image copy.png',
     '/images/image copy 2.png',
+  ];
+
+  const photoMessages = [
+    "You are my favorite view",
+    "Myanmar San San Lay Nae Chit Po Kg Nay Yaw",
+    "Every moment with you is precious",
+    "D Pic Lay Ko Ya Aung Yu Htar Ya Tar",
+    "College Water Festival Tone Ka Kalay Kya Nay Yaw Sok Tr",
+    "Forever in my heart Yu"
   ];
 
   const quizQuestions = [
@@ -69,12 +79,21 @@ export default function Home() {
   const prevStage = () => setStage((prev) => prev - 1);
 
   const handleQuizAnswer = (option: string) => {
-    const updated = [...quizAnswers, option];
+    const updated = [...quizAnswers];
+    updated[quizStep] = option;
     setQuizAnswers(updated);
     if (quizStep < quizQuestions.length - 1) {
       setQuizStep(quizStep + 1);
     } else {
       setStage((prev) => prev + 1);
+    }
+  };
+
+  const goBack = () => {
+    if (stage === 2 && quizStep > 0) {
+      setQuizStep(quizStep - 1);
+    } else {
+      setStage((prev) => prev - 1);
     }
   };
 
@@ -155,20 +174,30 @@ export default function Home() {
               {photos.map((src, index) => (
                 <div 
                   key={index} 
-                  className={`gallery-circle-item orbit-${index}`}
+                  className={`gallery-circle-item orbit-${index} ${hoveredIndex === index ? 'paused-animation' : ''}`}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
                 >
-                  <Image 
-                    src={src} 
-                    alt={`Archive ${index + 1}`} 
-                    width={300} 
-                    height={300} 
-                  />
+                  <div className="photo-inner">
+                    <Image 
+                      src={src} 
+                      alt={`Archive ${index + 1}`} 
+                      width={300} 
+                      height={300} 
+                    />
+                  </div>
+                  {hoveredIndex === index && (
+                    <div className="hover-message-box">
+                      {photoMessages[index]}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
 
             <div className="mt-12 w-full flex flex-row justify-center items-center gap-4">
-              <button onClick={prevStage} className="btn-back">
+              <button onClick={goBack} className="btn-back">
                 <span>←</span> Back
               </button>
               <button onClick={nextStage} className="btn-primary">
@@ -197,7 +226,7 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-12 w-full flex flex-row justify-center items-center gap-4">
-              <button onClick={prevStage} className="btn-back">
+              <button onClick={goBack} className="btn-back">
                 <span>←</span> Previous
               </button>
               <span className="text-gray-400 text-sm hidden sm:block">Question {quizStep + 1} of {quizQuestions.length}</span>
@@ -237,7 +266,7 @@ export default function Home() {
               </div>
 
               <div className="mt-4 w-full flex flex-row justify-center items-center gap-4">
-                <button onClick={prevStage} className="btn-back">
+                <button onClick={goBack} className="btn-back">
                   <span>←</span> Back
                 </button>
                 <button 
