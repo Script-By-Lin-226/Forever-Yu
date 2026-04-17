@@ -268,12 +268,12 @@ export default function Home() {
                 <p className="text-sm leading-relaxed text-gray-600 mb-8">
                   I am committed to our continued growth, to respecting your boundaries, 
                   and to celebrating the exceptional individual that you are. <br/>
-                  <strong>I swear I have only You</strong> and I will always be with you no matter what.
+                  <strong>I swear I have only you</strong> and I will always be with you no matter what. <br /> <strong>I can wait for you no matter how long it takes and the day you will be trust on me.</strong>
                 </p>
                 
                 <div className="finale-signature mt-12 pt-8 border-t border-rose-100">
                   <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2">Respectfully yours,</p>
-                  <p className="font-serif italic text-2xl text-rose-600">Liam</p>
+                  <p className="font-serif italic text-2xl text-rose-600">Lynn</p>
                 </div>
               </div>
             </EnvelopeAnimation>
