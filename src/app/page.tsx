@@ -84,9 +84,9 @@ export default function Home() {
     setCheckedDislikes(updated);
   };
 
-  const saveToStorage = () => {
+  const saveToServer = async () => {
+    setIsSaving(true);
     const data = {
-      timestamp: new Date().toISOString(),
       quizAnswers: quizQuestions.map((q, i) => ({
         question: q.question,
         answer: quizAnswers[i] || '',
@@ -95,17 +95,51 @@ export default function Home() {
       acknowledgedDislikes: dislikes.filter((_, i) => checkedDislikes[i]),
       extraNote,
     };
-    
-    const existing = JSON.parse(localStorage.getItem('surprise_responses') || '[]');
-    existing.push(data);
-    localStorage.setItem('surprise_responses', JSON.stringify(existing));
+
+    try {
+      const response = await fetch('/api/choices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to save');
+    } catch (error) {
+      console.error('Error saving choice:', error);
+      // Fallback to local storage if API fails
+      const existing = JSON.parse(localStorage.getItem('surprise_responses') || '[]');
+      existing.push({ ...data, timestamp: new Date().toISOString() });
+      localStorage.setItem('surprise_responses', JSON.stringify(existing));
+    } finally {
+      setIsSaving(false);
+      setStage((prev) => prev + 1);
+    }
   };
+
+  const Heartbeat = () => (
+    <div className="heartbeat-container">
+      <div className="heartbeat-inner">
+        <div className="heartbeat-ripple"></div>
+        <div className="heartbeat-ripple"></div>
+        <div className="heartbeat-ripple"></div>
+        <div className="heartbeat-main">❤️</div>
+      </div>
+      <div className="ecg-container">
+        <svg viewBox="0 0 1000 100" preserveAspectRatio="none" className="w-full h-full">
+          <path 
+            className="ecg-line" 
+            d="M0,50 L200,50 L220,50 L240,10 L260,90 L280,50 L300,50 L500,50 L520,50 L540,10 L560,90 L580,50 L600,50 L800,50 L820,50 L840,10 L860,90 L880,50 L1000,50" 
+          />
+        </svg>
+      </div>
+    </div>
+  );
 
   const nextStageWithSave = () => {
     if (stage === 3) {
-      saveToStorage();
+      saveToServer();
+    } else {
+      setStage((prev) => prev + 1);
     }
-    setStage((prev) => prev + 1);
   };
 
   return (
@@ -114,7 +148,8 @@ export default function Home() {
         {/* Stage 0: Welcome */}
         {stage === 0 && (
           <div className="text-center fade-in">
-            <h1 className="fancy-title">Forever Yu</h1>
+            <Heartbeat />
+            <h1 className="fancy-title"><span className="premium-gradient-text">Forever Yu</span></h1>
             <p className="description-text mx-auto">
               I've curated this experience to share something that word's alone cannot express. 
               A journey through our shared memories and the professional respect and deep affection I hold for you.

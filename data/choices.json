@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1776412698991",
+    "quizAnswers": [
+      {
+        "question": "What's my favorite thing about you?",
+        "answer": "Your Eyes",
+        "correct": "Everything"
+      },
+      {
+        "question": "Where was our most memorable moment?",
+        "answer": "The first time we met",
+        "correct": "Student Management System Training"
+      },
+      {
+        "question": "If I could give you anything, what would it be?",
+        "answer": "My Whole Heart",
+        "correct": "All of the above"
+      }
+    ],
+    "acknowledgedDislikes": [
+      "Dishonesty, even in small things",
+      "Lack of communication during tough times"
+    ],
+    "extraNote": "",
+    "timestamp": "2026-04-17T07:58:18.991Z"
+  }
+]

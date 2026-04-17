@@ -11,15 +11,33 @@ interface Response {
 
 export default function AdminPanel() {
   const [responses, setResponses] = useState<Response[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('surprise_responses') || '[]');
-    setResponses(data);
+    fetchResponses();
   }, []);
 
-  const clearAll = () => {
-    localStorage.removeItem('surprise_responses');
-    setResponses([]);
+  const fetchResponses = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/choices');
+      const data = await response.json();
+      setResponses(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error('Failed to fetch responses:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const clearAll = async () => {
+    if (!confirm('Are you sure you want to clear all data?')) return;
+    try {
+      await fetch('/api/choices', { method: 'DELETE' });
+      setResponses([]);
+    } catch (error) {
+      console.error('Failed to clear data:', error);
+    }
   };
 
   return (
@@ -28,7 +46,11 @@ export default function AdminPanel() {
         <h1 className="fancy-title" style={{ fontSize: '2.5rem' }}>Admin Panel</h1>
         <p className="description-text mx-auto">All responses collected from the surprise experience.</p>
 
-        {responses.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-10" style={{ color: '#999' }}>
+            <p style={{ fontSize: '1.2rem' }}>Loading responses...</p>
+          </div>
+        ) : responses.length === 0 ? (
           <div className="text-center py-10" style={{ color: '#999' }}>
             <p style={{ fontSize: '1.2rem' }}>No responses yet.</p>
             <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Responses will appear here once someone completes the experience.</p>
