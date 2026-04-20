@@ -53,19 +53,69 @@ export default function Home() {
   const quizQuestions = [
     {
       question: "What's my favorite thing about you?",
-      options: ["Your Smile", "Your Kindness", "Everything", "Your Eyes"],
+      options: ["Your Smile", "Your Kindness", "Everything", "Your Eyes" , "Your Actions"],
       answer: "Everything"
     },
     {
       question: "Where was our most memorable moment?",
-      options: ["Student Management System Training", "That long walk", "The first time we met", "Every second with you"],
+      options: ["Student Management System Training", "That long walk to Helden", "The first time we met in office", "Every second with you"],
       answer: "Student Management System Training"
     },
     {
       question: "If I could give you anything, what would it be?",
       options: ["The World", "Happiness", "My Whole Heart", "All of the above"],
       answer: "All of the above"
-    }
+    },
+    {
+  question: "If we went on a date, what would you choose?",
+  options: ["Romantic dinner", "Movie night", "Late night walk", "Cafe date"],
+  answer: "Cafe date"
+},
+{
+  question: "What would you notice first about me?",
+  options: ["Smile", "Eyes", "Style", "Personality"],
+  answer: "Personality"
+},
+{
+  question: "If I text you late at night, what would you do?",
+  options: ["Reply instantly", "Wait a bit then reply", "Ignore (😢)", "Call instead"],
+  answer: "Reply instantly"
+},
+{
+  question: "What kind of nickname would you give me?",
+  options: ["Nin", "Cutie", "Troublemaker", "Eee Tone Kaung"],
+  answer: "Eee Tone Kaung"
+},
+{
+  question: "What would make you blush the most?",
+  options: ["Compliments", "Eye contact", "Cute messages", "Unexpected surprises"],
+  answer: "Compliments"
+},
+{
+  question: "What type of vibe do I give you?",
+  options: ["Sweet", "Mysterious", "Funny", "Dangerous 😏"],
+  answer: "Sweet"
+},
+{
+  question: "If we were alone together, what would we do?",
+  options: ["Talk for hours", "Watch something", "Listen to music", "Just enjoy the moment"],
+  answer: "Talk for hours"
+},
+{
+  question: "What would you steal from me?",
+  options: ["My hoodie", "My attention", "My heart", "My snacks"],
+  answer: "My hoodie"
+},
+{
+  question: "What kind of messages do you like from me?",
+  options: ["Cute texts", "Flirty texts", "Voice notes", "Random memes"],
+  answer: "Flirty texts"
+},
+{
+  question: "If I asked you out right now, what would you say?",
+  options: ["Yes immediately", "Maybe 😉", "Convince me", "Of course"],
+  answer: "Of course"
+}
   ];
 
   const dislikes = [
